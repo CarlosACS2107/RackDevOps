@@ -1,0 +1,14 @@
+[package]
+name = "rackdevops"
+version = "0.1.0"
+description = "RackDevOps - Diseño de Infraestructura de Red"
+
+[app]
+name = "rackdevops-app"
+source = "."
+
+[[app.manifests]]
+type = "node"
+build_command = "npm run build"
+start_command = "node server.js"
+env = { NODE_ENV = "production" }
