@@ -1,0 +1,48 @@
+import { Routes, Route, Navigate } from "react-router-dom";
+import Home from "./pages/Home";
+import Index from "./pages/index";
+import Login from "./auth/Login";
+import Register from "./auth/Register";
+import { useAuth } from "./auth/AuthContext";
+
+export default function App() {
+
+    const { token } = useAuth();
+
+    return (
+        <Routes>
+            <Route
+                path="/login"
+                element={
+                    token
+                        ? <Navigate to="/" />
+                        : <Login />
+                }
+            />
+            <Route
+                path="/register"
+                element={
+                    token
+                        ? <Navigate to="/" />
+                        : <Register />
+                }
+            />
+            <Route
+                path="/"
+                element={
+                    token
+                        ? <Home />
+                        : <Navigate to="/login" />
+                }
+            />
+            <Route
+                path="/project"
+                element={
+                    token
+                        ? <Index />
+                        : <Navigate to="/login" />
+                }
+            />
+        </Routes>
+    );
+}
