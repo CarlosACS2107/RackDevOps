@@ -13,6 +13,7 @@ const JWT_SECRET = "RackDynamics_ClaveTemporal";
 const catalogoEquipos = require("./catalog/equipos");
 const { buscarProducto } = require("./services/serpApiService");
 const { obtenerEquipo } = require("./services/equipoService");
+const path = require('path');
 
 /* ==========================================
    Registrar usuario
@@ -541,18 +542,23 @@ app.post("/api/cotizacion", async (req, res) => {
 
 });
 
-const path = require('path');
+// ============================================
+//   SERVIDOR DE ARCHIVOS ESTÁTICOS Y SPA
+// ============================================
 
 // 1. Servir archivos estáticos del frontend (carpeta dist)
 app.use(express.static(path.join(__dirname, '../frontend/dist')));
 
-// 2. Para cualquier ruta no API, enviar index.html (SPA)
-app.get('*', (req, res) => {
+// 2. Middleware para SPA (catch-all) - compatible con Express 5
+app.use((req, res, next) => {
+    // Si llegamos aquí, la ruta no fue manejada por rutas API ni archivos estáticos.
+    // Devolvemos index.html para que React Router maneje la navegación.
     res.sendFile(path.join(__dirname, '../frontend/dist', 'index.html'));
 });
-/* ==========================================
-   INICIAR SERVIDOR
-========================================== */
+
+// ============================================
+//   INICIAR SERVIDOR
+// ============================================
 
 app.listen(3000, () => {
     console.log("Servidor activo puerto 3000");
