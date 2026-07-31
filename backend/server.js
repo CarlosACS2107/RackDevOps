@@ -541,6 +541,15 @@ app.post("/api/cotizacion", async (req, res) => {
 
 });
 
+const path = require('path');
+
+// 1. Servir archivos estáticos del frontend (carpeta dist)
+app.use(express.static(path.join(__dirname, '../frontend/dist')));
+
+// 2. Para cualquier ruta no API, enviar index.html (SPA)
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/dist', 'index.html'));
+});
 /* ==========================================
    INICIAR SERVIDOR
 ========================================== */
